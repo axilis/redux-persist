@@ -15,12 +15,13 @@ export default function createMigrate(
   ): Promise<PersistedState> {
     if (!state) {
       if (process.env.NODE_ENV !== 'production' && debug)
-        console.log('redux-persist: no inbound state, skipping migration')
-      return Promise.resolve(undefined)
+        console.log(
+          'redux-persist: no inbound state, running initial migration'
+        )
     }
 
     let inboundVersion: number =
-      state._persist && state._persist.version !== undefined
+      state && state._persist && state._persist.version !== undefined
         ? state._persist.version
         : DEFAULT_VERSION
     if (inboundVersion === currentVersion) {
