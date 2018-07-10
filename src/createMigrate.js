@@ -4,6 +4,13 @@ import { DEFAULT_VERSION } from './constants'
 
 import type { PersistedState, MigrationManifest } from './types'
 
+const defaultState = {
+  _persist: {
+    version: DEFAULT_VERSION,
+    rehydrated: true,
+  },
+}
+
 export default function createMigrate(
   migrations: MigrationManifest,
   config?: { debug: boolean }
@@ -50,7 +57,7 @@ export default function createMigrate(
             versionKey
           )
         return migrations[versionKey](state)
-      }, state)
+      }, state || defaultState)
       return Promise.resolve(migratedState)
     } catch (err) {
       return Promise.reject(err)
